@@ -4,6 +4,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+//Routes imports
+const userRoutes = require('./Routes/userRoutes');
+const transactionRoutes = require('./Routes/transactionRoutes');
+const stockRoutes = require('./Routes/stockRoutes');
+const saleRoutes = require('./Routes/saleRoutes');
+const gameRoutes = require('./Routes/gameRoutes');
+const game_labelRoutes = require('./Routes/game_labelRoutes');
+const financial_reportRoutes = require('./Routes/financial_reportRoutes');
+const eventRoutes = require('./Routes/eventRoutes')
 
 const app = express();
 
@@ -37,9 +46,15 @@ mongoose.connect(process.env.MONGO_URI)
         console.error('Could not connect to MongoDB...', err);
     });
 
-
-
-
+// Routes uses 
+app.use('/api', userRoutes);
+app.use('/api', transactionRoutes);
+app.use('/api', stockRoutes);
+app.use('/api', saleRoutes);
+app.use('/api', gameRoutes);
+app.use('/api', game_labelRoutes);
+app.use('/api', financial_reportRoutes);
+app.use('/api', eventRoutes);
 
 
 
