@@ -3,7 +3,7 @@ const GameLabel = require('../Models/game_label');
 // GET all game labels
 exports.getAllGameLabels = async (req, res) => {
     try {
-        const gameLabels = await GameLabel.find().populate('game_id seller_id'); // Récupère les détails du jeu et du vendeur
+        const gameLabels = await GameLabel.find().populate('game_id buyer_id'); // Récupère les détails du jeu et du vendeur
         res.status(200).json(gameLabels);
     } catch (error) {
         res.status(500).json({ message: 'Erreur serveur', error });
@@ -13,7 +13,7 @@ exports.getAllGameLabels = async (req, res) => {
 // GET game label by ID
 exports.getGameLabelById = async (req, res) => {
     try {
-        const gameLabel = await GameLabel.findById(req.params.id).populate('game_id seller_id');
+        const gameLabel = await GameLabel.findById(req.params.id).populate('game_id buyer_id');
         if (!gameLabel) {
             return res.status(404).json({ message: 'Étiquette non trouvée' });
         }
@@ -26,11 +26,11 @@ exports.getGameLabelById = async (req, res) => {
 // POST create a new game label
 exports.createGameLabel = async (req, res) => {
     try {
-        const { game_id, seller_id } = req.body;
+        const { game_id, buyer_id } = req.body;
 
         const newGameLabel = new GameLabel({
             game_id,
-            seller_id,
+            buyer_id,
         });
 
         await newGameLabel.save();
@@ -43,7 +43,7 @@ exports.createGameLabel = async (req, res) => {
 // PUT update an existing game label
 exports.updateGameLabel = async (req, res) => {
     try {
-        const updatedGameLabel = await GameLabel.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('game_id seller_id');
+        const updatedGameLabel = await GameLabel.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('game_id buyer_id');
         if (!updatedGameLabel) {
             return res.status(404).json({ message: 'Étiquette non trouvée' });
         }

@@ -3,7 +3,7 @@ const Sale = require('../Models/sale');
 // GET all sales
 exports.getAllSales = async (req, res) => {
     try {
-        const sales = await Sale.find().populate('game_id user_id'); // Récupérer les détails du jeu et de l'utilisateur
+        const sales = await Sale.find().populate('game_id seller_id buyer_id'); // Récupérer les détails du jeu, du vendeur et de l'acheteur
         res.status(200).json(sales);
     } catch (error) {
         res.status(500).json({ message: 'Erreur serveur', error });
@@ -13,7 +13,7 @@ exports.getAllSales = async (req, res) => {
 // GET sale by ID
 exports.getSaleById = async (req, res) => {
     try {
-        const sale = await Sale.findById(req.params.id).populate('game_id user_id');
+        const sale = await Sale.findById(req.params.id).populate('game_id seller_id buyer_id');
         if (!sale) {
             return res.status(404).json({ message: 'Vente non trouvée' });
         }
@@ -26,11 +26,12 @@ exports.getSaleById = async (req, res) => {
 // POST create a new sale
 exports.createSale = async (req, res) => {
     try {
-        const { game_id, user_id, sale_price, quantity_sold, commission } = req.body;
+        const { game_id, seller_id, buyer_id, sale_price, quantity_sold, commission } = req.body;
 
         const newSale = new Sale({
             game_id,
-            user_id,
+            seller_id,
+            buyer_id,
             sale_price,
             quantity_sold,
             commission,
@@ -46,7 +47,7 @@ exports.createSale = async (req, res) => {
 // PUT update an existing sale
 exports.updateSale = async (req, res) => {
     try {
-        const updatedSale = await Sale.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('game_id user_id');
+        const updatedSale = await Sale.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('game_id seller_id buyer_id');
         if (!updatedSale) {
             return res.status(404).json({ message: 'Vente non trouvée' });
         }
