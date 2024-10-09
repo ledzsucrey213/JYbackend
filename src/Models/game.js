@@ -5,7 +5,8 @@ const gameSCHEMA = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true},
     price: { type: Number, required: true },
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    event_id : {type : mongoose.Schema.Types.ObjectId, ref: 'Event', required : true},
+    seller_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     stock_quantity: { type: Number, required: true },
     condition: { 
         type: String, 
