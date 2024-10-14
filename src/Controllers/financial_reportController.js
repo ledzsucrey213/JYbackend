@@ -1,70 +1,57 @@
-const FinancialReport = require('../Models/financial_report');
+const Report = require('../Models/financial_report');
 
-// GET all financial reports
-exports.getAllFinancialReports = async (req, res) => {
+exports.getReports = async (req, res) => {
     try {
-        const reports = await FinancialReport.find().populate('seller_id'); // Récupérer les détails du vendeur
+        const reports = await Report.find().populate('seller_id').populate('event_id').populate('stock_id');
         res.status(200).json(reports);
     } catch (error) {
-        res.status(500).json({ message: 'Erreur serveur', error });
+        res.status(500).json({ message: error.message });
     }
 };
 
-// GET financial report by ID
-exports.getFinancialReportById = async (req, res) => {
+exports.createReport = async (req, res) => {
     try {
-        const report = await FinancialReport.findById(req.params.id).populate('seller_id');
-        if (!report) {
-            return res.status(404).json({ message: 'Rapport financier non trouvé' });
-        }
+        const report = new Report(req.body);
+        const savedReport = await report.save();
+        res.status(201).json(savedReport);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+exports.getReportById = async (req, res) => {
+    try {
+        const report = await Report.findById(req.params.id).populate('seller_id').populate('event_id').populate('stock_id');
+        if (!report) return res.status(404).json({ message: "Report not found" });
         res.status(200).json(report);
     } catch (error) {
-        res.status(500).json({ message: 'Erreur serveur', error });
+        res.status(500).json({ message: error.message });
     }
 };
 
-// POST create a new financial report
-exports.createFinancialReport = async (req, res) => {
+exports.updateReport = async (req, res) => {
     try {
-        const { seller_id, total_sales, total_deposits, total_commission, balance_due } = req.body;
-
-        const newReport = new FinancialReport({
-            seller_id,
-            total_sales,
-            total_deposits,
-            total_commission,
-            balance_due,
-        });
-
-        await newReport.save();
-        res.status(201).json({ message: 'Rapport financier créé avec succès', newReport });
+        const updatedReport = await Report.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(200).json(updatedReport);
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la création du rapport financier', error });
+        res.status(400).json({ message: error.message });
     }
 };
 
-// PUT update an existing financial report
-exports.updateFinancialReport = async (req, res) => {
+exports.deleteReport = async (req, res) => {
     try {
-        const updatedReport = await FinancialReport.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('seller_id');
-        if (!updatedReport) {
-            return res.status(404).json({ message: 'Rapport financier non trouvé' });
-        }
-        res.status(200).json({ message: 'Rapport financier mis à jour avec succès', updatedReport });
+        await Report.findByIdAndDelete(req.params.id);
+        res.status(204).json();
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la mise à jour du rapport financier', error });
+        res.status(500).json({ message: error.message });
     }
 };
 
-// DELETE financial report by ID
-exports.deleteFinancialReport = async (req, res) => {
+exports.getReportsByEvent = async (req, res) => {
     try {
-        const deletedReport = await FinancialReport.findByIdAndDelete(req.params.id);
-        if (!deletedReport) {
-            return res.status(404).json({ message: 'Rapport financier non trouvé' });
-        }
-        res.status(200).json({ message: 'Rapport financier supprimé avec succès' });
+        const reports = await Report.find({ event_id: req.params.event_id }).populate('seller_id').populate('stock_id');
+        res.status(200).json(reports);
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la suppression du rapport financier', error });
+        res.status(500).json({ message: error.message });
     }
 };

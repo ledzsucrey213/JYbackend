@@ -6,7 +6,7 @@ require('dotenv').config();
 
 //Routes imports
 const userRoutes = require('./Routes/userRoutes');
-const transactionRoutes = require('./Routes/transactionRoutes');
+const invoiceRoutes = require('./Routes/invoiceRoutes');
 const stockRoutes = require('./Routes/stockRoutes');
 const saleRoutes = require('./Routes/saleRoutes');
 const gameRoutes = require('./Routes/gameRoutes');
@@ -48,7 +48,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes uses 
 app.use('/api', userRoutes);
-app.use('/api', transactionRoutes);
+app.use('/api', invoiceRoutes);
 app.use('/api', stockRoutes);
 app.use('/api', saleRoutes);
 app.use('/api', gameRoutes);

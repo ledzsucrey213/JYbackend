@@ -1,69 +1,57 @@
-const Event = require('../Models/event');
+const Event = require('../Models/Event');
 
-// GET all events
-exports.getAllEvents = async (req, res) => {
+exports.getEvents = async (req, res) => {
     try {
         const events = await Event.find();
         res.status(200).json(events);
     } catch (error) {
-        res.status(500).json({ message: 'Erreur serveur', error });
+        res.status(500).json({ message: error.message });
     }
 };
 
-// GET event by ID
+exports.createEvent = async (req, res) => {
+    try {
+        const event = new Event(req.body);
+        const savedEvent = await event.save();
+        res.status(201).json(savedEvent);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 exports.getEventById = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id);
-        if (!event) {
-            return res.status(404).json({ message: 'Événement non trouvé' });
-        }
+        if (!event) return res.status(404).json({ message: "Event not found" });
         res.status(200).json(event);
     } catch (error) {
-        res.status(500).json({ message: 'Erreur serveur', error });
+        res.status(500).json({ message: error.message });
     }
 };
 
-// POST create a new event
-exports.createEvent = async (req, res) => {
-    try {
-        const { name, start, end, is_active } = req.body;
-
-        const newEvent = new Event({
-            name,
-            start,
-            end,
-            is_active,
-        });
-
-        await newEvent.save();
-        res.status(201).json({ message: 'Événement créé avec succès', newEvent });
-    } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la création de l\'événement', error });
-    }
-};
-
-// PUT update an existing event
 exports.updateEvent = async (req, res) => {
     try {
         const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedEvent) {
-            return res.status(404).json({ message: 'Événement non trouvé' });
-        }
-        res.status(200).json({ message: 'Événement mis à jour avec succès', updatedEvent });
+        res.status(200).json(updatedEvent);
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'événement', error });
+        res.status(400).json({ message: error.message });
     }
 };
 
-// DELETE event by ID
 exports.deleteEvent = async (req, res) => {
     try {
-        const deletedEvent = await Event.findByIdAndDelete(req.params.id);
-        if (!deletedEvent) {
-            return res.status(404).json({ message: 'Événement non trouvé' });
-        }
-        res.status(200).json({ message: 'Événement supprimé avec succès' });
+        await Event.findByIdAndDelete(req.params.id);
+        res.status(204).json();
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de la suppression de l\'événement', error });
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getActiveEvent = async (req, res) => {
+    try {
+        const activeEvent = await Event.findOne({ is_active: true });
+        res.status(200).json(activeEvent);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };

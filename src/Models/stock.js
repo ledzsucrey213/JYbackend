@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const stockSCHEMA = new Schema({
-    game_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Game', required: true },
+const stockSchema = new Schema({
+    games_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'GameLabel', required: true }],
     seller_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    quantity_sold: { type: Number, required: true },
-    stock_quantity: { type: Number, required: true }
+    games_sold: [{ type: mongoose.Schema.Types.ObjectId, ref: 'GameLabel' }]
 });
 
-module.exports = mongoose.model('Stock', stockSCHEMA);
+module.exports = mongoose.model('Stock', stockSchema);
