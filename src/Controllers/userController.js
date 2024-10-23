@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 const User = require('../Models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET;
+=======
+const User = require('../Models/User');
+>>>>>>> 76e0afd210e23ae2f20dbe1175279733d8bfe77f
 
 exports.getUsers = async (req, res) => {
     try {
@@ -13,6 +17,19 @@ exports.getUsers = async (req, res) => {
     }
 };
 
+<<<<<<< HEAD
+=======
+exports.createUser = async (req, res) => {
+    try {
+        const user = new User(req.body);
+        const savedUser = await user.save();
+        res.status(201).json(savedUser);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+>>>>>>> 76e0afd210e23ae2f20dbe1175279733d8bfe77f
 exports.getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -49,6 +66,7 @@ exports.getUsersByRole = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+<<<<<<< HEAD
 
 
 // Création d'un utilisateur
@@ -121,3 +139,5 @@ exports.adminOrManager = (req, res, next) => {
     next();
 };
 
+=======
+>>>>>>> 76e0afd210e23ae2f20dbe1175279733d8bfe77f
