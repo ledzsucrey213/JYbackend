@@ -2,12 +2,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    firstname: { type: String, required: false },
-    name: { type: String, required: false },
-    email: { type: String, required: false, unique: true },
-    address: { type: String, required: false },
+    firstname: { type: String, required: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    address: { type: String, required: false},
     password: { type: String, required: false },
     role: { type: String, enum: ['seller', 'buyer', 'admin', 'manager'], required: true }
 });
+
+
+// Hashage du mot de passe avant de sauvegarder
+userSchema.pre('save', async function(next) {
+    if (this.isModified('password') && (this.role === 'admin' || this.role === 'manager')) {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    }
+    next();
+});
+
 
 module.exports = mongoose.model('User', userSchema);
