@@ -8,7 +8,7 @@ const gameLabelSCHEMA = new Schema({
     condition: {type : String , enum: ['new', 'very good', 'good', 'poor'], required : true},
     deposit_fee : {type : Number, required : true},
     is_Sold : {type : Boolean, required : true},
-    creation : {type : Date, required : true, default : now},
+    creation : {type : Date, required : true, default : Date.now()},
     is_On_Sale : {type : Boolean, default : true, required : true}
 
 });

@@ -1,4 +1,4 @@
-const Sale = require('../Models/Sale');
+const Sale = require('../Models/sale');
 
 exports.getSales = async (req, res) => {
     try {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const gameLabelController = require('../Controllers/gameLabelController');
+const gameLabelController = require('../Controllers/game_labelController');
 
 router.get('/', gameLabelController.getGameLabels);
 router.post('/', gameLabelController.createGameLabel);
