@@ -1,5 +1,6 @@
 // dependencies importation
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
@@ -18,6 +19,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 // start the app
 
@@ -47,14 +49,14 @@ mongoose.connect(process.env.MONGO_URI)
     });
 
 // Routes uses 
-app.use('/api', userRoutes);
-app.use('/api', invoiceRoutes);
-app.use('/api', stockRoutes);
-app.use('/api', saleRoutes);
-app.use('/api', gameRoutes);
-app.use('/api', game_labelRoutes);
-app.use('/api', financial_reportRoutes);
-app.use('/api', eventRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/invoice', invoiceRoutes);
+app.use('/api/stock', stockRoutes);
+app.use('/api/sale', saleRoutes);
+app.use('/api/game', gameRoutes);
+app.use('/api/game_label', game_labelRoutes);
+app.use('/api/report', financial_reportRoutes);
+app.use('/api/event', eventRoutes);
 
 
 

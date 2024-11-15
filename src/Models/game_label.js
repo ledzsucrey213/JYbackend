@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const gameLabelSCHEMA = new Schema({
     seller_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    game_id : {type: mongoose.Schema.Types.ObjectId, ref: 'Game', required: true},
     price: { type: Number, required : true},
     event_id : {type : mongoose.Schema.Types.ObjectId, required : true},
     condition: {type : String , enum: ['new', 'very good', 'good', 'poor'], required : true},
