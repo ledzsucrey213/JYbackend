@@ -64,3 +64,23 @@ exports.getGameLabelsBySellerNotOnSale = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Récupérer les GameLabels par l'ID du jeu
+exports.getGameLabelsByGameId = async (req, res) => {
+    try {
+        // Recherche des GameLabels où l'ID du jeu correspond à celui fourni
+        const gameLabels = await GameLabel.find({ game_id: req.params.game_id });
+        
+        // Si aucun GameLabel n'est trouvé, retourner une réponse 404
+        if (gameLabels.length === 0) {
+            return res.status(404).json({ message: "No Game Labels found for this Game ID" });
+        }
+
+        // Sinon, renvoyer les GameLabels trouvés
+        res.status(200).json(gameLabels);
+    } catch (error) {
+        // En cas d'erreur, renvoyer une réponse 500 avec le message d'erreur
+        res.status(500).json({ message: error.message });
+    }
+};
+
