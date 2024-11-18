@@ -4,9 +4,9 @@ const eventController = require('../Controllers/eventController');
 
 router.get('/', eventController.getEvents);
 router.post('/', eventController.createEvent);
+router.get('/isActive', eventController.getActiveEvent);
 router.get('/:id', eventController.getEventById);
 router.put('/:id', eventController.updateEvent);
 router.delete('/:id', eventController.deleteEvent);
-router.get('/isActive', eventController.getActiveEvent);
 
 module.exports = router;
