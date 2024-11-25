@@ -4,6 +4,7 @@ const gameLabelController = require('../Controllers/game_labelController');
 
 router.get('/', gameLabelController.getGameLabels);
 router.post('/', gameLabelController.createGameLabel);
+router.post('/deposit/', gameLabelController.createGameLabels);
 router.get('/:id', gameLabelController.getGameLabelById);
 router.put('/:id', gameLabelController.updateGameLabel);
 router.delete('/:id', gameLabelController.deleteGameLabel);

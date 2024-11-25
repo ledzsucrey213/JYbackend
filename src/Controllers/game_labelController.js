@@ -84,3 +84,21 @@ exports.getGameLabelsByGameId = async (req, res) => {
     }
 };
 
+exports.createGameLabels = async (req, res) => {
+    try {
+        const gameLabels = req.body; // Assurez-vous que req.body contient un tableau
+        if (!Array.isArray(gameLabels)) {
+            return res.status(400).json({ message: "Request body must be an array of GameLabels" });
+        }
+
+        // Utilisez `insertMany` pour insérer plusieurs documents d'un coup
+        const savedGameLabels = await GameLabel.insertMany(gameLabels);
+        res.status(201).json(savedGameLabels);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+
+
+
