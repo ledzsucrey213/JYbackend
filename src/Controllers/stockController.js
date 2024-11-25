@@ -47,11 +47,16 @@ exports.deleteStock = async (req, res) => {
     }
 };
 
-exports.getStocksBySeller = async (req, res) => {
+exports.getStockBySeller = async (req, res) => {
     try {
-        const stocks = await Stock.find({ seller_id: req.params.seller_id }).populate('games_id').populate('games_sold');
-        res.status(200).json(stocks);
+      const { sellerId } = req.params;
+      const stock = await Stock.findOne({ seller_id: sellerId }).populate('games_id').populate('games_sold').populate('seller_id');
+      if (!stock) {
+        return res.status(404).json({ message: 'Stock not found' });
+      }
+      res.json(stock);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
     }
-};
+  };

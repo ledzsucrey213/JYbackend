@@ -7,6 +7,8 @@ router.post('/', stockController.createStock);
 router.get('/:id', stockController.getStockById);
 router.put('/:id', stockController.updateStock);
 router.delete('/:id', stockController.deleteStock);
-router.get('/seller/:seller_id', stockController.getStocksBySeller);
+router.get('/seller/:sellerId', stockController.getStockBySeller);
+
+
 
 module.exports = router;
