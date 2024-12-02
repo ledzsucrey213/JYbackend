@@ -55,3 +55,15 @@ exports.getReportsByEvent = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+exports.getReportsByEventBySeller = async (req, res) => {
+    try {
+        const reports = await Report.find({ 
+            event_id: req.params.event_id, 
+            seller_id: req.params.seller_id 
+        }).populate('seller_id').populate('stock_id');
+        res.status(200).json(reports);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

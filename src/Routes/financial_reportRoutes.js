@@ -8,5 +8,6 @@ router.get('/:id', reportController.getReportById);
 router.put('/:id', reportController.updateReport);
 router.delete('/:id', reportController.deleteReport);
 router.get('/event/:event_id', reportController.getReportsByEvent);
+router.get('/reports/event/:event_id/seller/:seller_id', reportController.getReportsByEventBySeller);
 
 module.exports = router;
