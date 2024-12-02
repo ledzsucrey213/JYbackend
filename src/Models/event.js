@@ -6,7 +6,8 @@ const eventSchema = new Schema({
     start: { type: Date, required: true },
     end: { type: Date, required: true },
     is_active: { type: Boolean, required: true },
-    commission: { type: Number, required: true }
+    commission: { type: Number, required: true },
+    deposit_fee: { type: Number, required: true }
 });
 
 module.exports = mongoose.model('Event', eventSchema);
