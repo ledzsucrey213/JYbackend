@@ -58,7 +58,7 @@ exports.getReportsByEvent = async (req, res) => {
 
 exports.getReportsByEventBySeller = async (req, res) => {
     try {
-        const reports = await Report.find({ 
+        const reports = await Report.findOne({ 
             event_id: req.params.event_id, 
             seller_id: req.params.seller_id 
         }).populate('seller_id').populate('stock_id');
