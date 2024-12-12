@@ -12,7 +12,7 @@ const userSchema = new Schema({
 });
 
 
-// Hashage du mot de passe avant de sauvegarder
+// Hashage du mot de passe avant de sauvegardera
 userSchema.pre('save', async function(next) {
     if (this.isModified('password') && (this.role === 'admin' || this.role === 'manager')) {
         const salt = await bcrypt.genSalt(10);
