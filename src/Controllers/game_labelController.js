@@ -99,6 +99,28 @@ exports.createGameLabels = async (req, res) => {
     }
 };
 
+exports.getNotReclaimedGames = async (req, res) => {
+    try {
+        const { event_id } = req.params;
+
+        // Rechercher les jeux dont l'événement est différent de celui donné et où `is_On_Sale` est `true`
+        const notReclaimedGames = await GameLabel.find({ 
+            event_id: { $ne: event_id }, // `event_id` différent du paramètre
+            is_On_Sale: true            // `is_On_Sale` est `true`
+        });
+
+        // Si aucun jeu n'est trouvé, retourner une réponse 404
+        if (notReclaimedGames.length === 0) {
+            return res.status(404).json({ message: "No unreclaimed games found for this event ID" });
+        }
+
+        // Sinon, renvoyer les jeux trouvés
+        res.status(200).json(notReclaimedGames);
+    } catch (error) {
+        // En cas d'erreur, renvoyer une réponse 500 avec le message d'erreur
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
 
