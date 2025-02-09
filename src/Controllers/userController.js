@@ -100,18 +100,23 @@ exports.login = async (req, res) => {
 
 // Middleware de vérification du token
 exports.authMiddleware = (req, res, next) => {
+    // Récupère le token depuis les cookies ou l'en-tête Authorization
     const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
-    if (!token) return res.status(401).json({ message: "No token, authorization denied" });
+    if (!token) {
+        return res.status(401).json({ message: "No token, authorization denied" });
+    }
 
     try {
+        // Vérifie le token et extrait les données (userId, role, etc.)
         const decoded = jwt.verify(token, JWT_SECRET);
-        req.user = decoded;
-        next();
+        req.user = decoded; // Ajoute les informations du token dans req.user
+        next(); // Passe au prochain middleware ou contrôleur
     } catch (error) {
-        res.status(401).json({ message: "Token is not valid" });
+        res.status(401).json({ message: "Token is not valid" }); // Si le token est invalide
     }
 };
+
 
 // Middleware de vérification du rôle admin ou manager
 exports.adminOrManager = (req, res, next) => {
@@ -120,4 +125,21 @@ exports.adminOrManager = (req, res, next) => {
     }
     next();
 };
+
+
+// Récupérer l'utilisateur actuel
+exports.getCurrentUser = async (req, res) => {
+    try {
+        // Utilise l'userId extrait du token dans req.user
+        const user = await User.findById(req.user.userId); 
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user); // Retourne les informations de l'utilisateur
+    } catch (error) {
+        res.status(500).json({ message: error.message }); // Gestion des erreurs
+    }
+};
+
+
 
